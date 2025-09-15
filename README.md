@@ -37,6 +37,21 @@ EthicalDRM enables content tracking, piracy deterrence, and watermark-based leak
 | 🌐 **Web Crawler Bot** | Scans public sites, Telegram groups, YouTube, torrents for leaks | 🔄 half done |
 | 👥 **User-Friendly** | No forced encryption, easy opt-out for users with older devices | ✅ Done |
 
+## 🚀 The Full Demo
+    This project is 100% functional. This demo video shows the complete, end-to-end workflow:
+
+    Protect: A creator uses our web UI to upload a file and watermark it with a unique ID .
+
+    Log: The session is instantly logged to our SQLite database.
+
+    Leak: The watermarked file is "leaked" (uploaded) to a public image-hosting site.
+
+     Monitor: Our app's "Leakbot Dashboard" is given the public URL.
+
+    Detect & Respond: The bot scrapes the page, finds all media, downloads them, and runs our detector. It correctly filters the "garbage" files, finds the real watermark, extracts the  ID, and then         automatically calls the Gemini AI to generate a full incident report and DMCA takedown draft, all live in the terminal.
+
+    ➡️https://drive.google.com/file/d/1UHWGVAk518GfRBLaFKzHJXLOFHymrcmx/view?usp=sharing⬅️
+
 ## 🏗️ Architecture
 
 
