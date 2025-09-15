@@ -33,53 +33,53 @@ EthicalDRM enables content tracking, piracy deterrence, and watermark-based leak
 | ✅ **History Dashboard** |	A second frontend page that reads the database and displays all watermark history | ✅ Done|
 | 🤖 **Leakbot Scanner** | A web scraper (Requests/BS4) that scans a target URL for all media. | ✅ Done |
 | ⚙️ **Easy Integration** | Add via Python/JS SDK or REST API in 10 minutes | ✅ Done |
-| 🧠 **AI-Powered Response**	Automatically sends the detected User ID to the Google Gemini API to generate a full incident report. | ✅ Done |
+| 🧠 **AI-Powered Response** | Automatically sends the detected User ID to the Google Gemini API to generate a full incident report. | ✅ Done |
 | 🌐 **Web Crawler Bot** | Scans public sites, Telegram groups, YouTube, torrents for leaks | 🔄 half done |
 | 👥 **User-Friendly** | No forced encryption, easy opt-out for users with older devices | ✅ Done |
 
 ## 🏗️ Architecture
 
 
-[ User Browser (Frontend: HTML, Tailwind CSS) ]
+    [ User Browser (Frontend: HTML, Tailwind CSS) ]
       |
       v
-[ Flask Web Server (Waitress) ] <--- [ run.py ]
+    [ Flask Web Server (Waitress) ] <--- [ run.py ]
       |
-------------------------------------------------------
-|  Web UI (index.html, history.html)                 |
-|  Flask API Endpoints (/watermark, /api/history)    |
-|  Leakbot Scanner Logic (/run-scan, runs in thread) |
-|  Google Gemini API Client                          |
-------------------------------------------------------
-      |                            |
-[ SQLite Database ]         [ Watermarking Engine ]
- (ethicaldrm.db)           (OpenCV, PIL, Hashlib)
+    ------------------------------------------------------
+    |  Web UI (index.html, history.html)                 |
+    |  Flask API Endpoints (/watermark, /api/history)    |
+    |  Leakbot Scanner Logic (/run-scan, runs in thread) |
+    |  Google Gemini API Client                          |
+    ------------------------------------------------------
+          |                            |
+    [ SQLite Database ]         [ Watermarking Engine ]
+    (ethicaldrm.db)           (OpenCV, PIL, Hashlib)
 
 ## 🚀 Quick Start
 
 ### 1. Install SDK
 
-# Clone the repository
-git clone https://github.com/devils-advocate1/ethicaldrm.git
-cd [PROJECT_FOLDER_NAME]
+    # Clone the repository
+    git clone https://github.com/devils-advocate1/ethicaldrm.git
+    cd [PROJECT_FOLDER_NAME]
 
-# Create a Python virtual environment
-python -m venv venv
-.\venv\Scripts\Activate.ps1
+    # Create a Python virtual environment
+     python -m venv venv
+    .\venv\Scripts\Activate.ps1
 
-# Create a .env file in the root directory and add your API key
-# GOOGLE_API_KEY=AIzaSy...your_key_here...
+    # Create a .env file in the root directory and add your API key
+    GOOGLE_API_KEY=AIzaSy...your_key_here...
 
 
 
-#  Install the project in "editable mode" (this fixes all Python import paths)
-pip install -e .
+    #  Install the project in "editable mode" (this fixes all Python import paths)
+        pip install -e .
 
-#  Install all required libraries
-pip install -r requirements.txt
+    #  Install all required libraries
+        pip install -r requirements.txt
 
-# Run the application using the main entry script
-python run.py
+     # Run the application using the main entry script
+     python run.py
 
 ### 2. Embed Watermark in Video
 
