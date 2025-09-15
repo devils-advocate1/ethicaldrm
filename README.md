@@ -1,11 +1,11 @@
 # �️ EthicalDRM - Ethical Digital Rights Management Kit
 
-**Version:** 1.0 | **Author:** Ramij Raj | **License:** MIT | **Status:** Beta  
+**Version:** 1.0 | **Author:** Ramij Raj | **License:** MIT | **Status:** Working Prototype  
 **Project Codename:** EthicalDRM
 
 A lightweight, pluggable DRM (Digital Rights Management) kit built for independent creators, teachers, and small studios who want to protect their content — ethically and efficiently.
 
-EthicalDRM enables content tracking, piracy deterrence, and watermark-based leak detection — without ruining the experience for genuine users.
+EthicalDRM enables content tracking, piracy deterrence, and watermark-based leak detection proactively monitor the web for leaks, and automatically respond to piracy using Generative AI — without ruining the experience for genuine users.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -24,38 +24,62 @@ EthicalDRM enables content tracking, piracy deterrence, and watermark-based leak
 
 | Feature | Description | Status |
 |---------|-------------|--------|
-| ✅ **Invisible Watermarking** | Embed account or user ID into video/audio frames silently | ✅ Done |
+| ✅ **Invisible Watermarking** | Embeds a unique UserID:Signature:Frame# into images/videos using LSB Steganography | ✅ Done |
 | 🛑 **Screen Recording Block** | Detect & block tools like OBS, Snagit, Bandicam (Windows/Mac) | ✅ Done |
+| 🖼️ **Web Interface**	   | A polished, drag-and-drop UI (built with Tailwind CSS) for watermarking files | ✅ Done|
+| ✅ **Database Logging**  |	All sessions are logged to a persistent SQLite database |  ✅ Done |
 | 🧠 **AI Leak Detection** | Scene-matching via perceptual hashing (video/audio) | ✅ Beta |
 | � **Leak Traceback** | Pinpoint which user leaked based on watermark or signature | ✅ Done |
+| ✅ **History Dashboard** |	A second frontend page that reads the database and displays all watermark history | ✅ Done|
+| 🤖 **Leakbot Scanner** | A web scraper (Requests/BS4) that scans a target URL for all media. | ✅ Done |
 | ⚙️ **Easy Integration** | Add via Python/JS SDK or REST API in 10 minutes | ✅ Done |
-| 🌐 **Web Crawler Bot** | Scans public sites, Telegram groups, YouTube, torrents for leaks | 🔄 In Progress |
+| 🧠 **AI-Powered Response**	Automatically sends the detected User ID to the Google Gemini API to generate a full incident report. | ✅ Done |
+| 🌐 **Web Crawler Bot** | Scans public sites, Telegram groups, YouTube, torrents for leaks | 🔄 half done |
 | 👥 **User-Friendly** | No forced encryption, easy opt-out for users with older devices | ✅ Done |
 
 ## 🏗️ Architecture
 
-```
-[ Your Platform ]
+
+[ User Browser (Frontend: HTML, Tailwind CSS) ]
       |
-[ EthicalDRM SDK ]
+      v
+[ Flask Web Server (Waitress) ] <--- [ run.py ]
       |
--------------------------------
-| Video Watermarker (Python)  |
-| Screen Rec Detector (JS/C++)|
-| Leak Scanner Bot (Python)   |
-| REST API Interface (Flask)  |
--------------------------------
-      |
-[ MongoDB / SQLite Logging DB ]
-```
+------------------------------------------------------
+|  Web UI (index.html, history.html)                 |
+|  Flask API Endpoints (/watermark, /api/history)    |
+|  Leakbot Scanner Logic (/run-scan, runs in thread) |
+|  Google Gemini API Client                          |
+------------------------------------------------------
+      |                            |
+[ SQLite Database ]         [ Watermarking Engine ]
+ (ethicaldrm.db)           (OpenCV, PIL, Hashlib)
 
 ## 🚀 Quick Start
 
 ### 1. Install SDK
 
-```bash
-pip install ethicaldrm
-```
+# Clone the repository
+git clone https://github.com/devils-advocate1/ethicaldrm.git
+cd [PROJECT_FOLDER_NAME]
+
+# Create a Python virtual environment
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# Create a .env file in the root directory and add your API key
+# GOOGLE_API_KEY=AIzaSy...your_key_here...
+
+
+
+#  Install the project in "editable mode" (this fixes all Python import paths)
+pip install -e .
+
+#  Install all required libraries
+pip install -r requirements.txt
+
+# Run the application using the main entry script
+python run.py
 
 ### 2. Embed Watermark in Video
 
@@ -108,8 +132,11 @@ ethicaldrm/
 ├── leakbot/
 │   └── scanner.py        # AI-powered leak detection
 ├── api/
-│   └── app.py            # Flask REST API server
-│
+│   └── app.py           # Flask REST API server
+│   └──template
+                └──index.html
+                └──history.html
+     └──run.py    #starting the server
 ├── examples/             # Usage examples
 ├── tests/               # Test suite
 ├── requirements.txt     # Dependencies
@@ -199,6 +226,27 @@ We believe security shouldn't punish the honest user. Our goals:
 | Google Drive Leak Detection | ⏳ Planned |
 | JS SDK for Browser Videos | ⏳ Planned |
 | GUI Dashboard | 🧪 Alpha |
+
+📅 Future Roadmap (The Full Vision)
+
+phase 1: Infrastructure & Bot Scaling
+Expand to Telegram & Social Media: Evolve the Leakbot from a simple web scraper into a multi-platform monitor. I will build a dedicated module using Telethon to scan public and private Telegram channels and integrate with the YouTube API to find pirated content.
+
+Distributed Architecture: Re-architect the bot into a distributed, event-driven microservice. This involves using a message queue (like RabbitMQ) to manage scan jobs for a pool of containerized Docker workers, enabling concurrent scanning of thousands of target sites simultaneously.
+
+Phase 2: Advanced Forensic Detection
+AI-Powered Perceptual Hashing: Move beyond simple file matching. I will train a custom Computer Vision model (like a Siamese Network). This will allow the bot to find leaked content even if it has been re-compressed, cropped, filtered, or screen-recorded from a phone.
+
+Forensic Audio Watermarking: Expand the service to include spread-spectrum audio watermarking for podcasters and musicians, ensuring that even audio-only rips remain traceable.
+
+Active Screen-Recorder Blocking: Build the planned C++/JavaScript module to proactively detect and block known screen-recording processes (like OBS and ShareX) at the client level, stopping leaks before they even happen.
+
+Phase 3: Fully Automated Response & Analytics
+Robo-DMCA (Full Automation): Evolve the "AI Report" into a fully automated takedown system. I will build direct API integrations with major cloud hosts (AWS, Cloudflare, Azure) and content platforms (YouTube, Vimeo) to auto-dispatch DMCA notices the instant a confirmed leak is detected, requiring zero human action.
+
+Viral Leak Analysis (Graph DB): Implement a graph database (like Neo4j) to track the spread of a leak. When the bot finds a leak, it will also trace all outbound links on that page to map its viral spread across the internet, providing creators with a stunning visual dashboard of their content's exposure.
+
+Full SaaS Platform: Launch the entire system as a tiered Software-as-a-Service (SaaS) platform, providing a central dashboard for creators to manage protected assets, view real-time leak analytics, and control their automated security responses.
 
 ## 🤝 Contributing
 
