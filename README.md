@@ -48,7 +48,9 @@ EthicalDRM enables content tracking, piracy deterrence, and watermark-based leak
 
      Monitor: Our app's "Leakbot Dashboard" is given the public URL.
 
-    Detect & Respond: The bot scrapes the page, finds all media, downloads them, and runs our detector. It correctly filters the "garbage" files, finds the real watermark, extracts the  ID, and then         automatically calls the Gemini AI to generate a full incident report and DMCA takedown draft, all live in the terminal.
+    Detect & Respond: The bot scrapes the page, finds all media, downloads them, and runs our detector. 
+    It correctly filters the "garbage" files, finds the real watermark, extracts the  ID, and then        
+    automatically calls the Gemini AI to generate a full incident report and DMCA takedown draft, all live in the terminal.
 
 ➡️https://drive.google.com/file/d/1UHWGVAk518GfRBLaFKzHJXLOFHymrcmx/view?usp=sharing⬅️
 
@@ -149,9 +151,9 @@ ethicaldrm/
 ├── api/
 │   └── app.py           # Flask REST API server
 │   └──template
-                └──index.html
-                └──history.html
-     └──run.py    #starting the server
+|   |    └──index.html
+|   |    └──history.html
+|   └──run.py            #starting the server
 ├── examples/             # Usage examples
 ├── tests/               # Test suite
 ├── requirements.txt     # Dependencies
